@@ -1,0 +1,22 @@
+<div id="app">
+  <div ng-controller="MainCtrl">
+    <form>
+      <!-- <button ng-click="selectFile()">Upload Your File</button> -->
+      <!-- <input
+        type="file"
+        style="display: block"
+        id="files"
+        name="files"
+        ng-change="fileNameChanged()"
+        ng-model="selectedFiles"
+      /> -->
+      <input
+        type="file"
+        id="files"
+        style="display: none"
+        onchange="angular.element(this).scope().SelectFile(event)"
+      />
+      <label for="files"> Select file</label>
+    </form>
+  </div>
+</div>
