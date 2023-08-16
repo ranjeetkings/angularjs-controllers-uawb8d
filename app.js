@@ -13,7 +13,8 @@ angular.module('app').controller('MainCtrl', function ($scope) {
     console.log(files.type);
     console.log(files.size);
 
-    // Convert the file to a byte array if it is less than or equal to 10 MB
+    // Convert the file to a byte array if it is less than or equal to 16 MB
+    let maxSize = 16 * 1024 * 1024;
     if (files.size <= maxSize) {
       readFileAsByteArray(files, function (byteArray) {
         // Do something with the byte array here, like sending it to the server
