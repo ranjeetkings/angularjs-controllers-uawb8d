@@ -39,7 +39,7 @@ angular.module('app').controller('MainCtrl', function ($scope) {
   $scope.SelectFile = function (e) {
     var files = e.target.files[0];
     var clickedRow = e.target.closest('tr');
-    var firstTdText = clickedRow.cells[0].textContent;
+    var firstTdText = clickedRow.cells[0].textContent || clickedRow.cells[0].innerHTML;
     console.log('First row text:', firstTdText);
     console.log(files.name);
     console.log(files.type);
