@@ -7,8 +7,40 @@ angular.module('app', []);
 angular.module('app').controller('MainCtrl', function ($scope) {
   $scope.message = 'hello';
 
+  $scope.businesses = [
+    // Your list of businesses here
+    {
+      nameOfBusiness: 'ABC',
+      otherData: 'ksdjfhjf',
+      thirdData: 'ksdjfhjf',
+    },
+    {
+      nameOfBusiness: 'Pizza',
+      otherData: 'ksdjfhjf',
+      thirdData: 'ksdjfhjf',
+    },
+    {
+      nameOfBusiness: 'Tekken',
+      otherData: 'ksdjfhjf',
+      thirdData: 'ksdjfhjf',
+    },
+    {
+      nameOfBusiness: 'Mortal',
+      otherData: 'ksdjfhjf',
+      thirdData: 'ksdjfhjf',
+    },
+    {
+      nameOfBusiness: 'Kombat',
+      otherData: 'ksdjfhjf',
+      thirdData: 'ksdjfhjf',
+    },
+  ];
+
   $scope.SelectFile = function (e) {
     var files = e.target.files[0];
+    var clickedRow = e.target.closest('tr');
+    var firstTdText = clickedRow.cells[0].textContent;
+    console.log('First row text:', firstTdText);
     console.log(files.name);
     console.log(files.type);
     console.log(files.size);

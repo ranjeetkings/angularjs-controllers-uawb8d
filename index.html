@@ -1,8 +1,8 @@
 <div id="app">
   <div ng-controller="MainCtrl">
-    <form>
-      <!-- <button ng-click="selectFile()">Upload Your File</button> -->
-      <!-- <input
+    <!-- <form> -->
+    <!-- <button ng-click="selectFile()">Upload Your File</button> -->
+    <!-- <input
         type="file"
         style="display: block"
         id="files"
@@ -10,13 +10,30 @@
         ng-change="fileNameChanged()"
         ng-model="selectedFiles"
       /> -->
+    <!-- <span id="spn">{{message}}</span>
+      <span id="spn">sgfdgfdgfd</span>
       <input
         type="file"
         id="files"
         style="display: none"
-        onchange="angular.element(this).scope().SelectFile(event)"
+        onchange="angular.element(this).scope().SelectFile(event,window.document.getElementById('spn').innerText)"
       />
       <label for="files"> Select file</label>
-    </form>
+    </form> -->
+    <table ng-click="tableClicked($event)">
+      <tr ng-repeat="business in businesses">
+        <td>{{ business.nameOfBusiness }}</td>
+        <td>{{ business.otherData }}</td>
+        <td>
+          <input
+            type="file"
+            id="files{{$index}}"
+            style="display: none"
+            onchange="angular.element(this).scope().SelectFile(event)"
+          />
+          <label for="files{{$index}}"> Select file</label>
+        </td>
+      </tr>
+    </table>
   </div>
 </div>
