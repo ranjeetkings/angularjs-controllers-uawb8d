@@ -11,35 +11,69 @@ angular.module('app').controller('MainCtrl', function ($scope) {
     // Your list of businesses here
     {
       nameOfBusiness: 'ABC',
-      otherData: 'ksdjfhjf',
-      thirdData: 'ksdjfhjf',
+      otherData: 'abc.pdf',
+      bytearray: [37, 80, 68, 70, 45, 49, 46, 53, 10],
     },
     {
       nameOfBusiness: 'Pizza',
-      otherData: 'ksdjfhjf',
-      thirdData: 'ksdjfhjf',
+      otherData: 'pizza.pdf',
+      bytearray: [37, 80, 68, 70, 45, 49, 46, 53, 10],
     },
     {
       nameOfBusiness: 'Tekken',
-      otherData: 'ksdjfhjf',
-      thirdData: 'ksdjfhjf',
+      otherData: 'tekken.pdf',
+      bytearray: [37, 80, 68, 70, 45, 49, 46, 53, 10],
     },
     {
-      nameOfBusiness: 'Mortal',
-      otherData: 'ksdjfhjf',
-      thirdData: 'ksdjfhjf',
+      nameOfBusiness: 'ABC',
+      otherData: 'abc1.pdf',
+      bytearray: [37, 80, 68, 70, 45, 49, 46, 53, 10],
     },
     {
-      nameOfBusiness: 'Kombat',
-      otherData: 'ksdjfhjf',
-      thirdData: 'ksdjfhjf',
+      nameOfBusiness: 'ABC',
+      otherData: 'abc2.pdf',
+      bytearray: [37, 80, 68, 70, 45, 49, 46, 53, 10],
     },
   ];
+
+  $scope.createReqBdy = function () {
+    // Create the request body format
+    var businessesMap = {};
+
+    for (var i = 0; i < $scope.businesses.length; i++) {
+      var business = $scope.businesses[i];
+
+      if (!businessesMap[business.nameOfBusiness]) {
+        businessesMap[business.nameOfBusiness] = [];
+      }
+
+      businessesMap[business.nameOfBusiness].push({
+        documentName: business.otherData,
+        document: business.bytearray,
+      });
+    }
+
+    $scope.requestBody = {
+      upload: [],
+    };
+
+    var businessNames = Object.keys(businessesMap);
+    for (var j = 0; j < businessNames.length; j++) {
+      var businessName = businessNames[j];
+      $scope.requestBody.upload.push({
+        businessName: businessName,
+        document: businessesMap[businessName],
+      });
+    }
+    console.log(' Request Body generated : ', $scope.requestBody);
+  };
 
   $scope.SelectFile = function (e) {
     var files = e.target.files[0];
     var clickedRow = e.target.closest('tr');
-    var firstTdText = clickedRow.cells[0].textContent.trim() || clickedRow.cells[0].innerHTML.trim();
+    var firstTdText =
+      clickedRow.cells[0].textContent.trim() ||
+      clickedRow.cells[0].innerHTML.trim();
     console.log('First row text:', firstTdText);
     console.log(files.name);
     console.log(files.type);
