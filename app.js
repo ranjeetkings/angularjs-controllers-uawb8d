@@ -80,14 +80,10 @@ angular.module('app').controller('MainCtrl', function ($scope) {
     console.log(files.size);
 
     // Convert the file to a byte array if it is less than or equal to 16 MB
-    let maxSize = 16 * 1024 * 1024;
+    let maxSize = 50 * 1024 * 1024;
     if (files.size <= maxSize) {
-      readFileAsByteArray(files, function (byteArray) {
-        // Do something with the byte array here, like sending it to the server
-        console.log(byteArray);
-
-        // Now you can perform any additional actions using the byteArray
-      });
+      var base64String = readFileAsByteArray(files);
+      console.log(' Base 64 String received ', base64String);
     } else {
       alert(
         files.name + '\n exceeds limit ' + files.size / (1024 * 1024) + ' MB'
@@ -96,20 +92,28 @@ angular.module('app').controller('MainCtrl', function ($scope) {
   };
 
   // Function to read the file as a byte array using FileReader with a callback
-  function readFileAsByteArray(file, callback) {
+  function readFileAsByteArray(file) {
     var reader = new FileReader();
 
     reader.onload = function (event) {
       var arrayBuffer = event.target.result;
       var byteArray = new Uint8Array(arrayBuffer);
-      callback(byteArray);
+      // Convert the byte array to a base64 string
+      var binaryString = '';
+      for (var i = 0; i < byteArray.length; i++) {
+        binaryString += String.fromCharCode(byteArray[i]);
+      }
+      var base64String = btoa(binaryString);
+
+      // Do something with the base64 string, like sending it to the server
+      console.log(base64String);
     };
 
     reader.onerror = function (event) {
       console.error('Error reading the file:', event.target.error);
     };
 
-    reader.readAsArrayBuffer(file);
+    return reader.readAsArrayBuffer(file);
   }
 });
 

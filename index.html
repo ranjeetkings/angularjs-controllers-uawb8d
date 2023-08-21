@@ -29,7 +29,7 @@
             type="file"
             id="files{{$index}}"
             style="display: none"
-            onchange="angular.element(this).scope().createReqBdy()"
+            onchange="angular.element(this).scope().SelectFile(event)"
           />
           <label for="files{{$index}}"> Select file</label>
         </td>
