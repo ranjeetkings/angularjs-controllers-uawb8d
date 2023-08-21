@@ -74,16 +74,20 @@ angular.module('app').controller('MainCtrl', function ($scope) {
     var firstTdText =
       clickedRow.cells[0].textContent.trim() ||
       clickedRow.cells[0].innerHTML.trim();
-    console.log('First row text:', firstTdText);
+    console.log('First row text:', e.target.files[0]);
     console.log(files.name);
     console.log(files.type);
     console.log(files.size);
 
     // Convert the file to a byte array if it is less than or equal to 16 MB
-    let maxSize = 50 * 1024 * 1024;
+    let maxSize = 16 * 1024 * 1024;
     if (files.size <= maxSize) {
-      var base64String = readFileAsByteArray(files);
-      console.log(' Base 64 String received ', base64String);
+      readFileAsByteArray(files, function (base64String) {
+        // Do something with the byte array here, like sending it to the server
+        console.log(' Base 64 Received ', base64String);
+
+        // Now you can perform any additional actions using the byteArray
+      });
     } else {
       alert(
         files.name + '\n exceeds limit ' + files.size / (1024 * 1024) + ' MB'
@@ -92,28 +96,31 @@ angular.module('app').controller('MainCtrl', function ($scope) {
   };
 
   // Function to read the file as a byte array using FileReader with a callback
-  function readFileAsByteArray(file) {
+  function readFileAsByteArray(file, callback) {
     var reader = new FileReader();
 
     reader.onload = function (event) {
       var arrayBuffer = event.target.result;
       var byteArray = new Uint8Array(arrayBuffer);
-      // Convert the byte array to a base64 string
-      var binaryString = '';
-      for (var i = 0; i < byteArray.length; i++) {
-        binaryString += String.fromCharCode(byteArray[i]);
-      }
-      var base64String = btoa(binaryString);
+      if (callback && typeof callback === 'function') {
+        // Convert the byte array to a base64 string
+        var binaryString = '';
+        for (var i = 0; i < byteArray.length; i++) {
+          binaryString += String.fromCharCode(byteArray[i]);
+        }
+        var base64String = btoa(binaryString);
 
-      // Do something with the base64 string, like sending it to the server
-      console.log(base64String);
+        // Do something with the base64 string, like sending it to the server
+        console.log(base64String);
+        callback(base64String);
+      }
     };
 
     reader.onerror = function (event) {
       console.error('Error reading the file:', event.target.error);
     };
 
-    return reader.readAsArrayBuffer(file);
+    reader.readAsArrayBuffer(file);
   }
 });
 
