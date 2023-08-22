@@ -29,6 +29,7 @@
             type="file"
             id="files{{$index}}"
             style="display: none"
+            ng-model="selectedFiles"
             onchange="angular.element(this).scope().SelectFile(event)"
           />
           <label for="files{{$index}}"> Select file</label>

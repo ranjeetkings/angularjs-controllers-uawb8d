@@ -36,6 +36,8 @@ angular.module('app').controller('MainCtrl', function ($scope) {
     },
   ];
 
+  var allBusinessesHaveEntries = true;
+
   $scope.createReqBdy = function () {
     // Create the request body format
     var businessesMap = {};
@@ -53,9 +55,25 @@ angular.module('app').controller('MainCtrl', function ($scope) {
       });
     }
 
+    // Check if each business has at least one entry
+
+    for (var i = 0; i < $scope.businesses.length; i++) {
+      var business = $scope.businesses[i];
+      if (!business.otherData || business.otherData.trim() === '') {
+        allBusinessesHaveEntries = false;
+        break; // If any business has no entries, break the loop
+      }
+    }
+
     $scope.requestBody = {
       upload: [],
     };
+
+    if (allBusinessesHaveEntries) {
+      console.log('All businesses have at least one entry.');
+    } else {
+      console.log('Not all businesses have at least one entry.');
+    }
 
     var businessNames = Object.keys(businessesMap);
     for (var j = 0; j < businessNames.length; j++) {
@@ -74,20 +92,26 @@ angular.module('app').controller('MainCtrl', function ($scope) {
     var firstTdText =
       clickedRow.cells[0].textContent.trim() ||
       clickedRow.cells[0].innerHTML.trim();
-    console.log('First row text:', e.target.files[0]);
+    console.log('First row text:', firstTdText);
     console.log(files.name);
     console.log(files.type);
     console.log(files.size);
 
     // Convert the file to a byte array if it is less than or equal to 16 MB
-    let maxSize = 16 * 1024 * 1024;
+    let maxSize = 50 * 1024 * 1024;
     if (files.size <= maxSize) {
       readFileAsByteArray(files, function (base64String) {
         // Do something with the byte array here, like sending it to the server
         console.log(' Base 64 Received ', base64String);
+        $scope.selectedFiles.push({
+          businessName: files.name,
+          fileName: files.name,
+          base64File: base64String,
+        });
 
         // Now you can perform any additional actions using the byteArray
       });
+      console.log(' Selected Files Array ', $scope.selectedFiles);
     } else {
       alert(
         files.name + '\n exceeds limit ' + files.size / (1024 * 1024) + ' MB'
