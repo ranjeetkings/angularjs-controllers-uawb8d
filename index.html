@@ -30,7 +30,7 @@
             id="files{{$index}}"
             style="display: none"
             ng-model="selectedFiles"
-            onchange="angular.element(this).scope().SelectFile(event)"
+            onchange="angular.element(this).scope().createReqBdy()"
           />
           <label for="files{{$index}}"> Select file</label>
         </td>
