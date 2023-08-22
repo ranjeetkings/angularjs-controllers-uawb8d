@@ -40,20 +40,20 @@ angular.module('app').controller('MainCtrl', function ($scope) {
 
   $scope.createReqBdy = function () {
     // Create the request body format
-    var businessesMap = {};
+    // var businessesMap = {};
 
-    for (var i = 0; i < $scope.businesses.length; i++) {
-      var business = $scope.businesses[i];
+    // for (var i = 0; i < $scope.businesses.length; i++) {
+    //   var business = $scope.businesses[i];
 
-      if (!businessesMap[business.nameOfBusiness]) {
-        businessesMap[business.nameOfBusiness] = [];
-      }
+    //   if (!businessesMap[business.nameOfBusiness]) {
+    //     businessesMap[business.nameOfBusiness] = [];
+    //   }
 
-      businessesMap[business.nameOfBusiness].push({
-        documentName: business.otherData,
-        document: business.bytearray,
-      });
-    }
+    //   businessesMap[business.nameOfBusiness].push({
+    //     documentName: business.otherData,
+    //     document: business.bytearray,
+    //   });
+    // }
 
     // Check if each business has at least one entry
 
@@ -65,9 +65,9 @@ angular.module('app').controller('MainCtrl', function ($scope) {
       }
     }
 
-    $scope.requestBody = {
-      upload: [],
-    };
+    // $scope.requestBody = {
+    //   upload: [],
+    // };
 
     if (allBusinessesHaveEntries) {
       console.log('All businesses have at least one entry.');
@@ -75,15 +75,15 @@ angular.module('app').controller('MainCtrl', function ($scope) {
       console.log('Not all businesses have at least one entry.');
     }
 
-    var businessNames = Object.keys(businessesMap);
-    for (var j = 0; j < businessNames.length; j++) {
-      var businessName = businessNames[j];
-      $scope.requestBody.upload.push({
-        businessName: businessName,
-        document: businessesMap[businessName],
-      });
-    }
-    console.log(' Request Body generated : ', $scope.requestBody);
+    // var businessNames = Object.keys(businessesMap);
+    // for (var j = 0; j < businessNames.length; j++) {
+    //   var businessName = businessNames[j];
+    //   $scope.requestBody.upload.push({
+    //     businessName: businessName,
+    //     document: businessesMap[businessName],
+    //   });
+    // }
+    // console.log(' Request Body generated : ', $scope.requestBody);
   };
 
   $scope.SelectFile = function (e) {
