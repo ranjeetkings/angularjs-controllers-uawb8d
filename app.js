@@ -98,20 +98,14 @@ angular.module('app').controller('MainCtrl', function ($scope) {
     console.log(files.size);
 
     // Convert the file to a byte array if it is less than or equal to 16 MB
-    let maxSize = 50 * 1024 * 1024;
+    let maxSize = 16 * 1024 * 1024;
     if (files.size <= maxSize) {
       readFileAsByteArray(files, function (base64String) {
         // Do something with the byte array here, like sending it to the server
         console.log(' Base 64 Received ', base64String);
-        $scope.selectedFiles.push({
-          businessName: files.name,
-          fileName: files.name,
-          base64File: base64String,
-        });
 
         // Now you can perform any additional actions using the byteArray
       });
-      console.log(' Selected Files Array ', $scope.selectedFiles);
     } else {
       alert(
         files.name + '\n exceeds limit ' + files.size / (1024 * 1024) + ' MB'
