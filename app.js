@@ -38,45 +38,51 @@ angular.module('app').controller('MainCtrl', function ($scope) {
 
   $scope.uploadedFilesResponse = [
     {
-        "businessName": "ABC",
-        "document": [
-            {
-                "documentName": "abc.pdf",
-                "document": [37,80,68,70,45,49,46,53,10]
-            },
-            {
-                "documentName": "abc1.pdf",
-                "document": [37,80,68,70,45,49,46,53,10]
-            },
-            {
-                "documentName": "abc2.pdf",
-                "document": [37,80,68,70,45,49,46,53,10]
-            }
-        ]
+      businessName: 'ABC',
+      document: [
+        {
+          documentName: 'abc.pdf',
+          documentId: 1,
+          document: [37, 80, 68, 70, 45, 49, 46, 53, 10],
+        },
+        {
+          documentName: 'abc1.pdf',
+          documentId: 2,
+          document: [37, 80, 68, 70, 45, 49, 46, 53, 10],
+        },
+        {
+          documentName: 'abc2.pdf',
+          documentId: 3,
+          document: [37, 80, 68, 70, 45, 49, 46, 53, 10],
+        },
+      ],
     },
     {
-        "businessName": "Pizza",
-        "document": [
-            {
-                "documentName": "pizza.pdf",
-                "document": [37,80,68,70,45,49,46,53,10]
-            },
-            {
-              "documentName": "pizza.pdf",
-              "document": [37,80,68,70,45,49,46,53,10]
-          }
-        ]
+      businessName: 'Pizza',
+      document: [
+        {
+          documentName: 'pizza.pdf',
+          documentId: 4,
+          document: [37, 80, 68, 70, 45, 49, 46, 53, 10],
+        },
+        {
+          documentName: 'pizza.pdf',
+          documentId: 5,
+          document: [37, 80, 68, 70, 45, 49, 46, 53, 10],
+        },
+      ],
     },
     {
-        "businessName": "Tekken",
-        "document": [
-            {
-                "documentName": "tekken.pdf",
-                "document": [37,80,68,70,45,49,46,53,10]
-            }
-        ]
-    }
-]
+      businessName: 'Tekken',
+      document: [
+        {
+          documentName: 'tekken.pdf',
+          documentId: 6,
+          document: [37, 80, 68, 70, 45, 49, 46, 53, 10],
+        },
+      ],
+    },
+  ];
 
   $scope.businesses = [
     // Your list of businesses here
@@ -94,13 +100,69 @@ angular.module('app').controller('MainCtrl', function ($scope) {
     },
   ];
 
+  $scope.deleteDocumentByDocumentID = function (documentID) {
+    for (var i = 0; i < $scope.uploadedFilesResponse.length; i++) {
+      var documents = $scope.uploadedFilesResponse[i].document;
+
+      for (var j = 0; j < documents.length; j++) {
+        if (documents[j].documentId === documentID) {
+          // Remove the document directly from the array
+          documents.splice(j, 1);
+
+          // If the parent object has no documents left, remove it
+          if (documents.length === 0) {
+            $scope.uploadedFilesResponse.splice(i, 1);
+          }
+
+          // Exit the loop once the document is found and removed
+          return;
+        }
+      }
+    }
+  };
+
+  // Function to find and delete a document by documentID
+  //   $scope.deleteDocumentByDocumentID = function (documentID) {
+  //     console.log(" Document to be removed is : ",documentID);
+  //     var documentToRemove = null;
+  //     var indexToDelete = -1;
+
+  //     for (var i = 0; i < $scope.uploadedFilesResponse.length; i++) {
+  //         var documents = $scope.uploadedFilesResponse[i].document;
+
+  //         for (var j = 0; j < documents.length; j++) {
+  //             if (documents[j].documentId === documentID) {
+  //                 documentToRemove = documents.splice(j, 1)[0];
+  //                 indexToDelete = i;
+  //                 break;
+  //             }
+  //         }
+
+  //         // If the document was found and removed, exit the outer loop.
+  //         if (indexToDelete !== -1) {
+  //             break;
+  //         }
+  //     }
+
+  //     // If a document was found and removed, remove the parent object if it has no documents left.
+  //     if (indexToDelete !== -1 && $scope.uploadedFilesResponse[indexToDelete].document.length === 0) {
+  //         $scope.uploadedFilesResponse.splice(indexToDelete, 1);
+  //     }
+  //     console.log(" Removed document is : ",documentToRemove);
+  //     // Return the removed document, or null if not found.
+  //     return documentToRemove;
+  // };
+
+  // Example usage:
+  // var removedDocument = $scope.deleteDocumentByDocumentID('ABC'); // Replace '123' with the actual documentID you want to delete.
+
   // Helper function to get documents for a specific business
   $scope.getDocumentsForBusiness = function (businessName) {
     var business = $scope.uploadedFilesResponse.find(function (item) {
-        return item.businessName === businessName;
+      return item.businessName === businessName;
     });
     return business ? business.document : [];
-};
+  };
 
   var allBusinessesHaveEntries = true;
 

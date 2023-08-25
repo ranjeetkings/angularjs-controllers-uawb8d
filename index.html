@@ -32,28 +32,34 @@
             onchange="angular.element(this).scope().createReqBdy()"
           />
           <label for="files{{$index}}"> Select file</label> -->
-          <!-- <button
+    <!-- <button
             ng-disabled="!allBusinessesHaveEntries"
           >
             test
           </button> -->
-        <!-- </td>
+    <!-- </td>
       </tr>
     </table> -->
-    <div ng-repeat="business in businesses" ng-if="business.requiresSupportDocs === true">
+    <div
+      ng-repeat="business in businesses"
+      ng-if="business.requiresSupportDocs === true"
+    >
       <div>
-          <div>
-              {{business.nameOfBusiness}} ({{getDocumentsForBusiness(business.nameOfBusiness).length}})
-              <i ng-click="collapse($event)" role="button" tabindex="0"></i>
-          </div>
+        <div>
+          {{business.nameOfBusiness}}
+          ({{getDocumentsForBusiness(business.nameOfBusiness).length}})
+          <i ng-click="collapse($event)" role="button" tabindex="0"></i>
+        </div>
       </div>
       <div>
-          <div ng-repeat="docu in getDocumentsForBusiness(business.nameOfBusiness)">
-              <span>
-                  {{docu.documentName}}
-              </span>
-          </div>
+        <div
+          ng-repeat="docu in getDocumentsForBusiness(business.nameOfBusiness)"
+        >
+          <span ng-click="deleteDocumentByDocumentID(docu.documentId)">
+            {{docu.documentName}} &nbsp;&nbsp; {{docu.documentId}}
+          </span>
+        </div>
       </div>
-  </div>
+    </div>
   </div>
 </div>
