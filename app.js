@@ -7,53 +7,119 @@ angular.module('app', []);
 angular.module('app').controller('MainCtrl', function ($scope) {
   $scope.message = 'hello';
 
+  // $scope.businesses = [
+  //   // Your list of businesses here
+  //   {
+  //     nameOfBusiness: 'ABC',
+  //     otherData: 'abc.pdf',
+  //     bytearray: [37, 80, 68, 70, 45, 49, 46, 53, 10],
+  //   },
+  //   {
+  //     nameOfBusiness: 'Pizza',
+  //     otherData: 'pizza.pdf',
+  //     bytearray: [37, 80, 68, 70, 45, 49, 46, 53, 10],
+  //   },
+  //   {
+  //     nameOfBusiness: 'Tekken',
+  //     otherData: 'tekken.pdf',
+  //     bytearray: [37, 80, 68, 70, 45, 49, 46, 53, 10],
+  //   },
+  //   {
+  //     nameOfBusiness: 'ABC',
+  //     otherData: 'abc1.pdf',
+  //     bytearray: [37, 80, 68, 70, 45, 49, 46, 53, 10],
+  //   },
+  //   {
+  //     nameOfBusiness: 'ABC',
+  //     otherData: 'abc2.pdf',
+  //     bytearray: [37, 80, 68, 70, 45, 49, 46, 53, 10],
+  //   },
+  // ];
+
+  $scope.uploadedFilesResponse = [
+    {
+        "businessName": "ABC",
+        "document": [
+            {
+                "documentName": "abc.pdf",
+                "document": [37,80,68,70,45,49,46,53,10]
+            },
+            {
+                "documentName": "abc1.pdf",
+                "document": [37,80,68,70,45,49,46,53,10]
+            },
+            {
+                "documentName": "abc2.pdf",
+                "document": [37,80,68,70,45,49,46,53,10]
+            }
+        ]
+    },
+    {
+        "businessName": "Pizza",
+        "document": [
+            {
+                "documentName": "pizza.pdf",
+                "document": [37,80,68,70,45,49,46,53,10]
+            },
+            {
+              "documentName": "pizza.pdf",
+              "document": [37,80,68,70,45,49,46,53,10]
+          }
+        ]
+    },
+    {
+        "businessName": "Tekken",
+        "document": [
+            {
+                "documentName": "tekken.pdf",
+                "document": [37,80,68,70,45,49,46,53,10]
+            }
+        ]
+    }
+]
+
   $scope.businesses = [
     // Your list of businesses here
     {
       nameOfBusiness: 'ABC',
-      otherData: 'abc.pdf',
-      bytearray: [37, 80, 68, 70, 45, 49, 46, 53, 10],
+      requiresSupportDocs: true,
     },
     {
       nameOfBusiness: 'Pizza',
-      otherData: 'pizza.pdf',
-      bytearray: [37, 80, 68, 70, 45, 49, 46, 53, 10],
+      requiresSupportDocs: true,
     },
     {
       nameOfBusiness: 'Tekken',
-      otherData: 'tekken.pdf',
-      bytearray: [37, 80, 68, 70, 45, 49, 46, 53, 10],
-    },
-    {
-      nameOfBusiness: 'ABC',
-      otherData: 'abc1.pdf',
-      bytearray: [37, 80, 68, 70, 45, 49, 46, 53, 10],
-    },
-    {
-      nameOfBusiness: 'ABC',
-      otherData: 'abc2.pdf',
-      bytearray: [37, 80, 68, 70, 45, 49, 46, 53, 10],
+      requiresSupportDocs: true,
     },
   ];
+
+  // Helper function to get documents for a specific business
+  $scope.getDocumentsForBusiness = function (businessName) {
+    var business = $scope.uploadedFilesResponse.find(function (item) {
+        return item.businessName === businessName;
+    });
+    return business ? business.document : [];
+};
 
   var allBusinessesHaveEntries = true;
 
   $scope.createReqBdy = function () {
     // Create the request body format
-    // var businessesMap = {};
+    var businessesMap = {};
 
-    // for (var i = 0; i < $scope.businesses.length; i++) {
-    //   var business = $scope.businesses[i];
+    for (var i = 0; i < $scope.businesses.length; i++) {
+      var business = $scope.businesses[i];
 
-    //   if (!businessesMap[business.nameOfBusiness]) {
-    //     businessesMap[business.nameOfBusiness] = [];
-    //   }
+      if (!businessesMap[business.nameOfBusiness]) {
+        businessesMap[business.nameOfBusiness] = [];
+      }
 
-    //   businessesMap[business.nameOfBusiness].push({
-    //     documentName: business.otherData,
-    //     document: business.bytearray,
-    //   });
-    // }
+      businessesMap[business.nameOfBusiness].push({
+        documentName: business.otherData,
+        document: business.bytearray,
+      });
+    }
 
     // Check if each business has at least one entry
 
@@ -65,9 +131,9 @@ angular.module('app').controller('MainCtrl', function ($scope) {
       }
     }
 
-    // $scope.requestBody = {
-    //   upload: [],
-    // };
+    $scope.requestBody = {
+      upload: [],
+    };
 
     if (allBusinessesHaveEntries) {
       console.log('All businesses have at least one entry.');
@@ -75,15 +141,15 @@ angular.module('app').controller('MainCtrl', function ($scope) {
       console.log('Not all businesses have at least one entry.');
     }
 
-    // var businessNames = Object.keys(businessesMap);
-    // for (var j = 0; j < businessNames.length; j++) {
-    //   var businessName = businessNames[j];
-    //   $scope.requestBody.upload.push({
-    //     businessName: businessName,
-    //     document: businessesMap[businessName],
-    //   });
-    // }
-    // console.log(' Request Body generated : ', $scope.requestBody);
+    var businessNames = Object.keys(businessesMap);
+    for (var j = 0; j < businessNames.length; j++) {
+      var businessName = businessNames[j];
+      $scope.requestBody.upload.push({
+        businessName: businessName,
+        document: businessesMap[businessName],
+      });
+    }
+    console.log(' Request Body generated : ', $scope.requestBody);
   };
 
   $scope.SelectFile = function (e) {

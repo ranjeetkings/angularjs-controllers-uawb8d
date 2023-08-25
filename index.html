@@ -20,7 +20,7 @@
       />
       <label for="files"> Select file</label>
     </form> -->
-    <table ng-click="tableClicked($event)">
+    <!-- <table ng-click="tableClicked($event)">
       <tr ng-repeat="business in businesses">
         <td>{{ business.nameOfBusiness }}</td>
         <td>{{ business.otherData }}</td>
@@ -31,14 +31,29 @@
             style="display: none"
             onchange="angular.element(this).scope().createReqBdy()"
           />
-          <label for="files{{$index}}"> Select file</label>
-          <button
+          <label for="files{{$index}}"> Select file</label> -->
+          <!-- <button
             ng-disabled="!allBusinessesHaveEntries"
           >
             test
-          </button>
-        </td>
+          </button> -->
+        <!-- </td>
       </tr>
-    </table>
+    </table> -->
+    <div ng-repeat="business in businesses" ng-if="business.requiresSupportDocs === true">
+      <div>
+          <div>
+              {{business.nameOfBusiness}} ({{getDocumentsForBusiness(business.nameOfBusiness).length}})
+              <i ng-click="collapse($event)" role="button" tabindex="0"></i>
+          </div>
+      </div>
+      <div>
+          <div ng-repeat="docu in getDocumentsForBusiness(business.nameOfBusiness)">
+              <span>
+                  {{docu.documentName}}
+              </span>
+          </div>
+      </div>
+  </div>
   </div>
 </div>
