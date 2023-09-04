@@ -103,17 +103,19 @@ angular.module('app').controller('MainCtrl', function ($scope) {
   $scope.putFiles = function (e) {
     var file = e.target.files[0];
     $scope.$apply(function () {
-        $scope.uploadedFilesResponse.push({
-            businessName: 'ABC',
-            document: [{
-                documentName: file.name,
-                documentId: 4,
-                document: [37, 80, 68, 70, 45, 49, 46, 53, 10],
-            }],
-        });
+      $scope.uploadedFilesResponse.push({
+        businessName: 'ABC',
+        document: [
+          {
+            documentName: file.name,
+            documentId: 4,
+            document: [37, 80, 68, 70, 45, 49, 46, 53, 10],
+          },
+        ],
+      });
     });
     console.log($scope.uploadedFilesResponse);
-};
+  };
 
   $scope.deleteDocumentByDocumentID = function (documentID) {
     for (var i = 0; i < $scope.uploadedFilesResponse.length; i++) {
