@@ -47,20 +47,23 @@
       <div>
         <div>
           {{business.nameOfBusiness}}
-          ({{getDocumentsForBusiness(business.nameOfBusiness).length}}) <input
-          type="file"
-          id="files{{$index}}"
-          onchange="angular.element(this).scope().putFiles(event)"
-        />
+          ({{getDocumentsForBusiness(business.nameOfBusiness).length}})
+          <input
+            type="file"
+            id="files{{$index}}"
+            onchange="angular.element(this).scope().putFiles(event)"
+          />
           <i ng-click="collapse($event)" role="button" tabindex="0"></i>
         </div>
       </div>
       <div>
         <div
-          ng-repeat="docu in getDocumentsForBusiness(business.nameOfBusiness)"
+          ng-repeat="docu in getDocumentsForBusiness"
+          ng-model="getDocumentsForBusiness"
         >
           <span ng-click="deleteDocumentByDocumentID(docu.documentId)">
-            {{docu.documentName}} &nbsp;&nbsp; {{docu.documentId}}
+            {{getDocumentsForBusiness(business.nameOfBusiness).documentName}}
+            &nbsp;&nbsp; {{docu.documentId}}
           </span>
         </div>
       </div>
