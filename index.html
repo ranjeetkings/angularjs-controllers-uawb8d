@@ -58,11 +58,11 @@
       </div>
       <div>
         <div
-          ng-repeat="docu in getDocumentsForBusiness"
-          ng-model="getDocumentsForBusiness"
+          ng-repeat="docu in getDocumentsForBusiness(business.nameOfBusiness)"
+          ng-model="uploadedFilesResponse"
         >
           <span ng-click="deleteDocumentByDocumentID(docu.documentId)">
-            {{getDocumentsForBusiness(business.nameOfBusiness).documentName}}
+            {{docu.documentName}}
             &nbsp;&nbsp; {{docu.documentId}}
           </span>
         </div>
