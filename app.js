@@ -138,7 +138,6 @@ angular.module('app').controller('MainCtrl', function ($scope) {
 
     // });
     console.log($scope.uploadedFilesResponse);
-    $scope.$apply();
   };
 
   $scope.deleteDocumentByDocumentID = function (documentID) {
