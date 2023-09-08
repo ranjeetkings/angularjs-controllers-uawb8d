@@ -100,21 +100,45 @@ angular.module('app').controller('MainCtrl', function ($scope) {
     },
   ];
 
+  function getRandomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
   $scope.putFiles = function (e) {
-    var file = e.target.files[0];
-    $scope.$apply(function () {
-      $scope.uploadedFilesResponse.push({
-        businessName: 'ABC',
-        document: [
-          {
-            documentName: file.name,
-            documentId: 4,
-            document: [37, 80, 68, 70, 45, 49, 46, 53, 10],
-          },
-        ],
-      });
-    });
+    var file = e.target.files;
+    $scope.randomNumber = getRandomNumber(1, 100);
+    // $scope.$apply(function () {
+    for (var i = 0; i < file.length; i++) {
+      var bus = file[i];
+      var targetBusinessIndex = $scope.uploadedFilesResponse.findIndex(
+        function (business) {
+          return business.businessName === 'ABC';
+        }
+      );
+
+      // If a business with the matching name is found, update its document array
+      if (targetBusinessIndex !== -1) {
+        $scope.uploadedFilesResponse[targetBusinessIndex].document.push({
+          documentId: $scope.randomNumber,
+          documentName: bus.name,
+        });
+      } else {
+        $scope.uploadedFilesResponse.push({
+          businessName: 'ABC',
+          document: [
+            {
+              documentName: 'ABC',
+              documentId: 4,
+              document: [37, 80, 68, 70, 45, 49, 46, 53, 10],
+            },
+          ],
+        });
+      }
+    }
+
+    // });
     console.log($scope.uploadedFilesResponse);
+    $scope.$apply();
   };
 
   $scope.deleteDocumentByDocumentID = function (documentID) {
