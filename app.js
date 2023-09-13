@@ -84,6 +84,39 @@ angular.module('app').controller('MainCtrl', function ($scope) {
     },
   ];
 
+  var newEntries = [
+    {
+      businessName: 'ABC',
+      document: [
+        {
+          documentName: 'newDocument1.pdf',
+          documentId: 8,
+          document: [37, 80, 68, 70, 45, 49, 46, 53, 10],
+        },
+      ],
+    },
+    {
+      businessName: 'XYZ',
+      document: [
+        {
+          documentName: 'newDocument2.pdf',
+          documentId: 9,
+          document: [37, 80, 68, 70, 45, 49, 46, 53, 10],
+        },
+      ],
+    },
+    {
+      businessName: 'ABC',
+      document: [
+        {
+          documentName: 'newDocument3.pdf',
+          documentId: 10,
+          document: [37, 80, 68, 70, 45, 49, 46, 53, 10],
+        },
+      ],
+    },
+  ];
+
   $scope.businesses = [
     // Your list of businesses here
     {
@@ -104,10 +137,45 @@ angular.module('app').controller('MainCtrl', function ($scope) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
+  $scope.updateEntries = function (newEntries) {
+    for (var i = 0; i < newEntries.length; i++) {
+      var newEntry = newEntries[i];
+      var businessNameExists = false;
+
+      console.log('Processing newEntry:', newEntry);
+
+      for (var j = 0; j < $scope.uploadedFilesResponse.length; j++) {
+        console.log(
+          'Processing existing entry:',
+          $scope.uploadedFilesResponse[j]
+        );
+
+        if (
+          $scope.uploadedFilesResponse[j].businessName === newEntry.businessName
+        ) {
+          console.log('Matching businessName found.');
+
+          if ($scope.uploadedFilesResponse[j].document && $scope.uploadedFilesResponse[j].document.length>0) {
+            // Update the document array for the existing entry
+            $scope.uploadedFilesResponse[j].document.concat(newEntry.document);
+          }
+          businessNameExists = true;
+        }
+      }
+
+      if (!businessNameExists) {
+        // If the businessName doesn't exist, add a new entry
+        $scope.uploadedFilesResponse.push(newEntry);
+        console.log('Added a new entry:', newEntry);
+      }
+    }
+  };
+
   $scope.putFiles = function (e) {
+    $scope.updateEntries(newEntries);
     var file = e.target.files;
     $scope.randomNumber = getRandomNumber(1, 100);
-    // $scope.$apply(function () {
+    $scope.$apply(function () {
     for (var i = 0; i < file.length; i++) {
       var bus = file[i];
       var targetBusinessIndex = $scope.uploadedFilesResponse.findIndex(
@@ -134,9 +202,10 @@ angular.module('app').controller('MainCtrl', function ($scope) {
           ],
         });
       }
+      // $scope.$apply();
     }
 
-    // });
+    });
     console.log($scope.uploadedFilesResponse);
   };
 

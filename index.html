@@ -58,7 +58,7 @@
       </div>
       <div>
         <div
-          ng-repeat="docu in getDocumentsForBusiness(business.nameOfBusiness)"
+          ng-repeat="docu in getDocumentsForBusiness(business.nameOfBusiness) track by $index"
           ng-model="getDocumentsForBusiness"
         >
           <span ng-click="deleteDocumentByDocumentID(docu.documentId)">
