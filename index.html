@@ -41,13 +41,12 @@
       </tr>
     </table> -->
     <div
-      ng-repeat="business in businesses"
-      ng-if="business.requiresSupportDocs === true"
+      ng-repeat="business in uploadedFilesResponse"
     >
       <div>
         <div>
-          {{business.nameOfBusiness}}
-          ({{getDocumentsForBusiness(business.nameOfBusiness).length}})
+          {{business.businessName}}
+          ({{getDocumentsForBusiness(business.businessName).length}})
           <input
             type="file"
             id="files{{$index}}"
@@ -58,7 +57,7 @@
       </div>
       <div>
         <div
-          ng-repeat="docu in getDocumentsForBusiness(business.nameOfBusiness) track by $index"
+          ng-repeat="docu in getDocumentsForBusiness(business.businessName) track by $index"
           ng-model="getDocumentsForBusiness"
         >
           <span ng-click="deleteDocumentByDocumentID(docu.documentId)">
