@@ -7,6 +7,8 @@ angular.module('app', []);
 angular.module('app').controller('MainCtrl', function ($scope) {
   $scope.message = 'hello';
 
+  $scope.val = '';
+
   // $scope.businesses = [
   //   // Your list of businesses here
   //   {
@@ -168,85 +170,94 @@ angular.module('app').controller('MainCtrl', function ($scope) {
   }
 
   // Function to update documents by businessName
-$scope.updateDocumentByBusinessName = function() {
-  var businessNameMap = {}; // A map to store entries by businessName
+  $scope.updateDocumentByBusinessName = function () {
+    var businessNameMap = {}; // A map to store entries by businessName
 
-  // Group entries by businessName
-  for (var i = 0; i < $scope.uploadedFilesResponse.length; i++) {
-    var entry = $scope.uploadedFilesResponse[i];
-    var businessName = entry.businessName;
+    // Group entries by businessName
+    for (var i = 0; i < $scope.uploadedFilesResponse.length; i++) {
+      var entry = $scope.uploadedFilesResponse[i];
+      var businessName = entry.businessName;
 
-    if (!businessNameMap[businessName]) {
-      businessNameMap[businessName] = entry;
-    } else {
-      // Merge documents into the existing entry
-      businessNameMap[businessName].document.concat(entry.document);
+      if (!businessNameMap[businessName]) {
+        businessNameMap[businessName] = entry;
+      } else {
+        // Merge documents into the existing entry
+        businessNameMap[businessName].document.concat(entry.document);
+      }
     }
-  }
 
-  // Convert the map back to an array
-  var updatedEntries = [];
-  for (var key in businessNameMap) {
-    if (businessNameMap.hasOwnProperty(key)) {
-      updatedEntries.push(businessNameMap[key]);
+    // Convert the map back to an array
+    var updatedEntries = [];
+    for (var key in businessNameMap) {
+      if (businessNameMap.hasOwnProperty(key)) {
+        updatedEntries.push(businessNameMap[key]);
+      }
     }
-  }
 
-  // Replace the original array with the updated one
-  return $scope.uploadedFilesResponse = updatedEntries;
-};
+    // Replace the original array with the updated one
+    return ($scope.uploadedFilesResponse = updatedEntries);
+  };
 
-$scope.init = function(){
-  $scope.updateDocumentByBusinessName();
-}
+  $scope.init = function () {
+    $scope.updateDocumentByBusinessName();
+    $scope.val = $scope.businesses[0].nameOfBusiness
+      ? '(' + $scope.businesses[0].nameOfBusiness + ')'
+      : '';
+  };
 
-$scope.init();
+  $scope.init();
 
-// Watch for changes in the uploadedFilesResponse array
-$scope.$watch('uploadedFilesResponse', function(newValue, oldValue) {
-  // Check if the array has changed
-  console.log("New",newValue);
-  console.log("Old",oldValue);
-  if (newValue !== oldValue) {
-    // Call the method to update entries by rearranging the array
-    // $scope.updateDocumentByBusinessName();
-    console.log("Changed",$scope.updateDocumentByBusinessName());
-  }
-}, true); // The 'true' parameter makes it a deep watch
+  // Watch for changes in the uploadedFilesResponse array
+  $scope.$watch(
+    'uploadedFilesResponse',
+    function (newValue, oldValue) {
+      // Check if the array has changed
+      console.log('New', newValue);
+      console.log('Old', oldValue);
+      if (newValue !== oldValue) {
+        // Call the method to update entries by rearranging the array
+        // $scope.updateDocumentByBusinessName();
+        console.log('Changed', $scope.updateDocumentByBusinessName());
+      }
+    },
+    true
+  ); // The 'true' parameter makes it a deep watch
 
   $scope.putFiles = function (e) {
     var file = e.target.files;
     $scope.randomNumber = getRandomNumber(1, 100);
     $scope.$apply(function () {
-    for (var i = 0; i < file.length; i++) {
-      var bus = file[i];
-      var targetBusinessIndex = $scope.uploadedFilesResponse.findIndex(
-        function (business) {
-          return business.businessName === $scope.uploadedFilesResponse[getRandomNumber(0,3)].businessName;
+      for (var i = 0; i < file.length; i++) {
+        var bus = file[i];
+        var targetBusinessIndex = $scope.uploadedFilesResponse.findIndex(
+          function (business) {
+            return (
+              business.businessName ===
+              $scope.uploadedFilesResponse[getRandomNumber(0, 3)].businessName
+            );
+          }
+        );
+
+        // If a business with the matching name is found, update its document array
+        if (targetBusinessIndex !== -1) {
+          $scope.uploadedFilesResponse[targetBusinessIndex].document.push({
+            documentId: $scope.randomNumber,
+            documentName: bus.name,
+          });
+        } else {
+          $scope.uploadedFilesResponse.push({
+            businessName: 'XYZ',
+            document: [
+              {
+                documentName: 'XYZ',
+                documentId: 4,
+                document: [37, 80, 68, 70, 45, 49, 46, 53, 10],
+              },
+            ],
+          });
         }
-      );
-
-      // If a business with the matching name is found, update its document array
-      if (targetBusinessIndex !== -1) {
-        $scope.uploadedFilesResponse[targetBusinessIndex].document.push({
-          documentId: $scope.randomNumber,
-          documentName: bus.name,
-        });
-      } else {
-        $scope.uploadedFilesResponse.push({
-          businessName: 'XYZ',
-          document: [
-            {
-              documentName: 'XYZ',
-              documentId: 4,
-              document: [37, 80, 68, 70, 45, 49, 46, 53, 10],
-            },
-          ],
-        });
+        // $scope.$apply();
       }
-      // $scope.$apply();
-    }
-
     });
     console.log($scope.uploadedFilesResponse);
   };

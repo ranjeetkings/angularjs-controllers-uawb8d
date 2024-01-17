@@ -40,10 +40,12 @@
     <!-- </td>
       </tr>
     </table> -->
+    <div>{{val}}</div>
     <div
       ng-repeat="business in uploadedFilesResponse"
     >
       <div>
+        
         <div>
           {{business.businessName}}
           ({{getDocumentsForBusiness(business.businessName).length}})
