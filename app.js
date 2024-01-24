@@ -152,15 +152,15 @@ angular.module('app').controller('MainCtrl', function ($scope) {
   $scope.businesses = [
     // Your list of businesses here
     {
-      nameOfBusiness: 'ABC',
+      nameOfBusiness: 'ABC (ahsgdh)',
       requiresSupportDocs: true,
     },
     {
-      nameOfBusiness: 'Pizza',
+      nameOfBusiness: 'Pizza (ahsgdh)',
       requiresSupportDocs: true,
     },
     {
-      nameOfBusiness: 'Tekken',
+      nameOfBusiness: 'Tekken (ahsgdh)',
       requiresSupportDocs: true,
     },
   ];
@@ -200,9 +200,16 @@ angular.module('app').controller('MainCtrl', function ($scope) {
 
   $scope.init = function () {
     $scope.updateDocumentByBusinessName();
-    $scope.val = $scope.businesses[0].nameOfBusiness
-      ? '(' + $scope.businesses[0].nameOfBusiness + ')'
-      : '';
+    for (var i = 0; i < $scope.businesses.length; i++) {
+      // console.log("Bus Value ",$scope.businesses[i]);
+      if ($scope.businesses[i].nameOfBusiness.indexOf('(') !== -1) {
+        console.log(
+          $scope.businesses[i].nameOfBusiness
+            .substring(0, $scope.businesses[i].nameOfBusiness.indexOf('('))
+            .trim()
+        );
+      }
+    }
   };
 
   $scope.init();
